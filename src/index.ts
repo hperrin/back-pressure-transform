@@ -39,39 +39,23 @@ export class BackPressureTransform {
       async write(chunk, _encoding, callback) {
         const output = await transform(chunk);
 
-        const writeData = () => {
-          if (output == null || readable.push(output)) {
-            callback();
-          } else {
-            writeCallback = callback;
-          }
-        };
-
-        if (readable.isPaused()) {
-          readable.once('resume', writeData);
+        if (output == null || readable.push(output)) {
+          callback();
         } else {
-          writeData();
+          writeCallback = callback;
         }
       },
 
       async final(callback) {
         const output = await flush();
 
-        const writeData = () => {
-          if (output != null) {
-            readable.push(output);
-          }
-
-          readable.push(null);
-
-          callback();
-        };
-
-        if (readable.isPaused()) {
-          readable.once('resume', writeData);
-        } else {
-          writeData();
+        if (output != null) {
+          readable.push(output);
         }
+
+        readable.push(null);
+
+        callback();
       },
     });
     this.writable = writable;
