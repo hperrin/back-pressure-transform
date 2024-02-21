@@ -1,6 +1,6 @@
 {
   "name": "@sciactive/back-pressure-transform",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A back pressure aware Transform stream.",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
